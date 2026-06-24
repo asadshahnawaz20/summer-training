@@ -23,22 +23,49 @@ patients = {
 
 def get_patient_city(patient_id):
     """Return the city for a given patient ID."""
-    # TODO: Safely return the city.
-    pass
+    
+    p = patients.get(patient_id)
+    if p == None:
+        return None
+ 
+    contact = p.get("contact")
+    if contact == None:
+        return None
+ 
+    city = contact.get("city")
+    return city
 
 
 def update_patient_condition(patient_id, new_condition):
     """Update a patient's condition."""
-    # TODO: Update the condition for the patient.
-    pass
+
+    if patient_id in patients:
+        patients[patient_id]["condition"] = new_condition
 
 
 def build_patient_summary():
     """Build and return a summary dictionary."""
-    # TODO: Return useful summary information.
-    pass
+
+    summary = {}
+ 
+    for patient_id in patients:
+        p = patients[patient_id]
+        name = p.get("name")
+        condition = p.get("condition")
+        city = p.get("contact", {}).get("city")
+ 
+        summary[patient_id] = {
+            "name": name,
+            "condition": condition,
+            "city": city,
+        }
+ 
+    return summary
 
 
 if __name__ == "__main__":
-    # TODO: Call your functions and print results.
-    pass
+    print(get_patient_city(1))
+
+    update_patient_condition(1, "asthma")
+
+    print(build_patient_summary())
