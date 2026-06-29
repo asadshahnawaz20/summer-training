@@ -14,38 +14,35 @@ def slicing_examples():
     first_three = patient_ids[0:3]
     last_three = patient_ids[-3:]
     reversed_ids = patient_ids[::-1]
- 
+
     print("first three Ids:", first_three)
     print("sast three Ids:", last_three)
     print("reversed Ids:", reversed_ids)
- 
+
     return first_three, last_three, reversed_ids
 
 
 def loop_examples():
     """Practice range, enumerate, and zip."""
-
     for i in range(len(patient_names)):
-        
         print(i)
- 
+
     for i, name in enumerate(patient_names):
         print(i, name)
- 
+
     for pid, name in zip(patient_ids, patient_names):
         print(pid, name)
 
 
 def comprehension_examples():
     """Return values created using comprehensions."""
-
     even_patient_ids = [pid for pid in patient_ids if pid % 2 == 0]
 
     upper_names = [name.upper() for name in patient_names]
- 
+
     print("Even IDs:", even_patient_ids)
     print("Upper names:", upper_names)
- 
+
     return even_patient_ids, upper_names
 
 

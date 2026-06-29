@@ -19,37 +19,35 @@ patients = [
 def label_risk(risk_score: int) -> str:
     """Return low, medium, or high based on risk score."""
     # TODO: Define thresholds and return label.
-    
+
     if risk_score >= 75:
         label = "high"
     elif risk_score >= 50:
         label = "medium"
     else:
         label = "low"
- 
+
     return label
 
 
 def add_risk_labels(patient_records: list[dict]) -> list[dict]:
     """Return copies of patient records with a risk_label field added."""
     # TODO: Add risk labels without modifying original records.
-    
+
     temp_list = []
     for patient in patient_records:
-
         new_patient = patient.copy()
-        
+
         new_patient["risk_label"] = label_risk(patient["risk_score"])
         temp_list.append(new_patient)
- 
+
     return temp_list
 
 
 def build_triage_report(patient_records: list[dict]) -> dict:
     """Build a triage report from patient records."""
     # TODO: Build and return final report.
-    
-def build_triage_report(patient_records):
+
     data = add_risk_labels(patient_records)
 
     total = len(data)
@@ -68,8 +66,8 @@ def build_triage_report(patient_records):
     report = {
         "summary": {"total_patients": total},
         "risk_counts": counts,
-        "active_high_risk_patients": high
-        }
+        "active_high_risk_patients": high,
+    }
 
     return report
 

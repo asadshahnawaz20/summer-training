@@ -23,43 +23,40 @@ patients = {
 
 def get_patient_city(patient_id):
     """Return the city for a given patient ID."""
-    
     p = patients.get(patient_id)
-    if p == None:
+    if p is None:
         return None
- 
+
     contact = p.get("contact")
-    if contact == None:
+    if contact is None:
         return None
- 
+
     city = contact.get("city")
     return city
 
 
 def update_patient_condition(patient_id, new_condition):
     """Update a patient's condition."""
-
     if patient_id in patients:
         patients[patient_id]["condition"] = new_condition
 
 
 def build_patient_summary():
     """Build and return a summary dictionary."""
-
     summary = {}
- 
+
     for patient_id in patients:
         p = patients[patient_id]
         name = p.get("name")
         condition = p.get("condition")
         city = p.get("contact", {}).get("city")
- 
+
         summary[patient_id] = {
             "name": name,
             "condition": condition,
             "city": city,
         }
- 
+
     return summary
 
 

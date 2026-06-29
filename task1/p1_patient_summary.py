@@ -31,14 +31,15 @@ def average_age(patient_records):
 
     return avg
 
+
 def count_active_patients(patient_records):
     """Return the number of active patients."""
     count = 0
 
     for pr in patient_records:
-        if pr['active'] == True:
+        if pr["active"]:
             count += 1
-    
+
     return count
 
 
@@ -47,7 +48,7 @@ def unique_conditions(patient_records):
     all_conditions = []
 
     for pr in patient_records:
-        all_conditions.append(pr['condition'])
+        all_conditions.append(pr["condition"])
 
     unique_list = list(set(all_conditions))
     unique_list.sort()
