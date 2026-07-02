@@ -2,7 +2,13 @@ from fastapi import APIRouter, HTTPException, Query, status, Depends
 from sqlmodel import Session, select
 
 from app.database import get_session
-from app.models import Patient, PatientCreate, PatientUpdate
+from app.auth import get_current_user
+from app.models import (
+    Patient,
+    PatientCreate,
+    PatientUpdate,
+    User,
+)
 
 router = APIRouter(
     prefix="/patients",
@@ -14,32 +20,49 @@ router = APIRouter(
     "/",
     response_model=list[Patient],
     summary="Get all patients",
-    description="Returns all patients. You can optionally filter by active status and limit the number of results.",
+    description="Returns all patients. Supports filtering and pagination.",
 )
 def get_patients(
     active: bool | None = Query(
         default=None,
         description="Filter patients by active status.",
     ),
-    limit: int | None = Query(
+    condition: str | None = Query(
         default=None,
+        description="Filter patients by condition.",
+    ),
+    limit: int = Query(
+        default=100,
+        ge=1,
         description="Maximum number of patients to return.",
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0,
+        description="Number of patients to skip.",
     ),
     session: Session = Depends(get_session),
 ) -> list[Patient]:
 
     statement = select(Patient)
-    patients = session.exec(statement).all()
 
     if active is not None:
-        patients = [
-            patient
-            for patient in patients
-            if patient.active == active
-        ]
+        statement = statement.where(
+            Patient.active == active
+        )
 
-    if limit is not None:
-        patients = patients[:limit]
+    if condition is not None:
+        statement = statement.where(
+            Patient.condition == condition
+        )
+
+    statement = (
+        statement
+        .offset(offset)
+        .limit(limit)
+    )
+
+    patients = session.exec(statement).all()
 
     return patients
 
@@ -76,6 +99,7 @@ def get_patient(
 def create_patient(
     patient_data: PatientCreate,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ) -> Patient:
 
     patient = Patient.model_validate(patient_data)
@@ -97,6 +121,7 @@ def update_patient(
     patient_id: int,
     updated_patient: PatientCreate,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ) -> Patient:
 
     patient = session.get(Patient, patient_id)
@@ -109,6 +134,8 @@ def update_patient(
 
     patient.name = updated_patient.name
     patient.age = updated_patient.age
+    patient.condition = updated_patient.condition
+    patient.risk_score = updated_patient.risk_score
     patient.active = updated_patient.active
 
     session.add(patient)
@@ -128,6 +155,7 @@ def patch_patient(
     patient_id: int,
     updated_data: PatientUpdate,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ) -> Patient:
 
     patient = session.get(Patient, patient_id)
@@ -138,7 +166,9 @@ def patch_patient(
             detail="Patient not found",
         )
 
-    patient_data = updated_data.model_dump(exclude_unset=True)
+    patient_data = updated_data.model_dump(
+        exclude_unset=True
+    )
 
     for key, value in patient_data.items():
         setattr(patient, key, value)
@@ -159,6 +189,7 @@ def patch_patient(
 def delete_patient(
     patient_id: int,
     session: Session = Depends(get_session),
+    current_user: User = Depends(get_current_user),
 ):
 
     patient = session.get(Patient, patient_id)

@@ -2,8 +2,11 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = "sqlite:///./patients.db"
-    SECRET_KEY: str = "change-me"
+    SECRET_KEY: str
+    DATABASE_URL: str = "sqlite:///patients.db"
+
+    class Config:
+        env_file = ".env"
 
 
 settings = Settings()

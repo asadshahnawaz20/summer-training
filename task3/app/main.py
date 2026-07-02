@@ -12,6 +12,7 @@ Then open the interactive docs at http://127.0.0.1:8000/docs
 from fastapi import FastAPI
 from app.routers import patients
 from app.database import create_db_and_tables
+from app.routers import auth
 
 app = FastAPI(
     title="Patient Management API",
@@ -19,6 +20,9 @@ app = FastAPI(
     version="0.1.0",
 )
 
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 @app.get("/", tags=["meta"], summary="API root")
 def read_root() -> dict[str, str]:
@@ -32,8 +36,5 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
-
 app.include_router(patients.router)
+app.include_router(auth.router)
