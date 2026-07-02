@@ -3,9 +3,14 @@ from app.main import app
 import pytest
 from app.database import engine
 from app.models import Patient
-from sqlmodel import Session, delete
+from sqlmodel import Session, delete, SQLModel
 
 client = TestClient(app)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def create_test_db():
+    SQLModel.metadata.create_all(engine)
 
 
 @pytest.fixture(autouse=True)
