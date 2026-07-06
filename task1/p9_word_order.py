@@ -10,16 +10,19 @@ sample_words = ["bcdef", "abcdefg", "bcde", "bcdef"]
 
 
 def word_order(words: list[str]) -> tuple[int, list[int]]:
-    """Return the count of distinct words and how many times each appears.
+    """Return the count of distinct words and how many times each appears."""
+    word_counts = {}
 
-    The occurrence counts must be ordered by each word's first appearance.
+    for word in words:
+        if word in word_counts:
+            word_counts[word] += 1
+        else:
+            word_counts[word] = 1
 
-    Example: ["bcdef", "abcdefg", "bcde", "bcdef"] -> (3, [2, 1, 1])
-    (3 distinct words; "bcdef" appears twice, then "abcdefg" and "bcde" once.)
-    """
-    # TODO: Count occurrences while preserving first-appearance order,
-    # then return (number_of_distinct_words, list_of_counts).
-    pass
+    distinct_count = len(word_counts)
+    counts = list(word_counts.values())
+
+    return distinct_count, counts
 
 
 if __name__ == "__main__":
