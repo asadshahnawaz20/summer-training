@@ -29,8 +29,8 @@ def minion_game(word: str) -> str:
 
     n = len(word)
 
-    k_score = 0
-    s_score = 0
+    kevin_score = 0
+    stuart_score = 0
 
     for i in range(n):
         letter = word[i]
@@ -38,14 +38,14 @@ def minion_game(word: str) -> str:
         sub_count = n - i
 
         if letter in VOWELS:
-            k_score = k_score + sub_count
+            kevin_score += sub_count
         else:
-            s_score = s_score + sub_count
+            stuart_score += sub_count
 
-    if s_score > k_score:
-        return "Stuart " + str(s_score)
-    elif k_score > s_score:
-        return "Kevin " + str(k_score)
+    if stuart_score > kevin_score:
+        return "Stuart " + str(stuart_score)
+    elif kevin_score > stuart_score:
+        return "Kevin " + str(kevin_score)
     else:
         return "Draw"
 

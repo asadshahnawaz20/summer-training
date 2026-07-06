@@ -9,16 +9,11 @@ Adapted as a function so it can be tested automatically.
 sample_scores = [2, 3, 6, 6, 5]
 
 
-def find_runner_up(scores: list[int]) -> int:
-    """Return the runner-up score: the second highest *distinct* value.
+def find_runner_up(scores: list[int]) -> int | None:
+    unique_scores = sorted(set(scores))
 
-    Example: [2, 3, 6, 6, 5] -> 5 (6 is the highest, 5 is the runner-up).
-    """
-    # TODO: Remove duplicate scores, then return the second largest value.
-
-    unique_scores = list(set(scores))
-
-    unique_scores.sort()
+    if len(unique_scores) < 2:
+        return None
 
     return unique_scores[-2]
 

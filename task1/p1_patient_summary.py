@@ -45,15 +45,12 @@ def count_active_patients(patient_records):
 
 def unique_conditions(patient_records):
     """Return a sorted list of unique conditions."""
-    all_conditions = []
+    conditions = set()
 
     for pr in patient_records:
-        all_conditions.append(pr["condition"])
+        conditions.add(pr["condition"])
 
-    unique_list = list(set(all_conditions))
-    unique_list.sort()
-
-    return unique_list
+    return sorted(conditions)
 
 
 def count_by_condition(patient_records):
