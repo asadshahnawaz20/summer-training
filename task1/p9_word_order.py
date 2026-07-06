@@ -11,7 +11,6 @@ sample_words = ["bcdef", "abcdefg", "bcde", "bcdef"]
 
 def word_order(words: list[str]) -> tuple[int, list[int]]:
     """Return the count of distinct words and how many times each appears."""
-
     word_counts = {}
 
     for word in words:

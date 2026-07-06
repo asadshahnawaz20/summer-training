@@ -10,6 +10,7 @@ sample_scores = [2, 3, 6, 6, 5]
 
 
 def find_runner_up(scores: list[int]) -> int | None:
+    """Return the second highest distinct score."""
     unique_scores = sorted(set(scores))
 
     if len(unique_scores) < 2:
