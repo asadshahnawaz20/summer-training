@@ -377,3 +377,43 @@ Add your reflection before submitting:
 5. What was the hardest bug you hit, and how did you debug it?
 6. What would you add or change to make this API production-ready?
 ```
+
+
+
+
+# Running with Docker
+
+## Prerequisites
+
+- Docker Desktop installed
+- Docker Compose
+
+## Build and start the application
+
+```bash
+docker compose up --build
+```
+
+The API will be available at:
+
+http://localhost:8000/docs
+
+## Check running containers
+
+```bash
+docker compose ps
+```
+
+## View API logs
+
+```bash
+docker compose logs api
+```
+
+## Stop the containers
+
+```bash
+docker compose down
+```
+
+Database data is stored in a Docker named volume, so it persists across container restarts.
